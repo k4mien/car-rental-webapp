@@ -1,6 +1,5 @@
 # Carmex - NodeJS Web App
 This project is simple NodeJS Web App using REST API.
-It allows to add, edit and delete clients, cars and reservations from the system.
 	
 ## Tech Stack
 * NodeJS
