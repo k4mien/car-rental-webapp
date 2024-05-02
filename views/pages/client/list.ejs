@@ -1,0 +1,47 @@
+<%- include('../../fragments/header.ejs') %>
+    <main>
+        <h2>Lista klientow</h2>
+        <table class="table-list">
+            <thead>
+                <tr>
+                    <th>Imie</th>
+                    <th>Nazwisko</th>
+                    <th>Pesel</th>
+                    <th>Email</th>
+                    <th>Numer telefonu</th>
+                    <th>Firma</th>
+                    <th>NIP</th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            <% for (let client of clients) { %>
+                <tr>
+                    <td><%=client.firstName%></td>
+                    <td><%=client.lastName%></td>
+                    <td><%=client.pesel%></td>
+                    <td><%=client.email%></td>
+                    <td><%=client.phoneNumber%></td>
+                    <td><%=client.companyName%></td>
+                    <td><%=client.nip%></td>
+                    <td>
+                        <ul class="list-actions">
+                            <li>
+                                <a href="/client/details/<%=client._id%>" class="list-actions-button-details">Szczegóły</a>
+                            </li>
+                            <li>
+                                <a href="/client/edit/<%=client._id%>" class="list-actions-button-edit">Edytuj</a>
+                            </li>
+                            <li>
+                                <a href="/client/delete/<%=client._id%>" class="list-actions-button-delete" onclick="return confirm('Czy na pewno chcesz usunąć tego klienta?');">Usuń</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            <% } %>
+            </tbody>
+        </table>
+        <p><a href="/client/add" class="button-add">Dodaj nowego klienta</a></p>
+    </main>
+<%- include('../../fragments/footer.ejs') %>

@@ -1,0 +1,7 @@
+1. Rozpakowac projekt
+2. Przejsc do katalogu z dockerem
+3. W terminalu odpalic docker-compose up
+4. Przejsc do glownego katalogu aplikacji i odpalic npm install, a potem npm start
+5. Aplikacja jest odpalona na porcie 3000 -> localhost:3000
+
+Jeżeli w bazie danych nie utworzyla sie baza to powinnismy wejsc na localhost:8183 i wykonac skrypt: CREATE SCHEMA IF NOT EXISTS `tin`;

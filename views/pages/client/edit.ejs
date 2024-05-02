@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Wypożyczalnia samochodów - CARMEX</title>
+</head>
+<body>
+    <header>
+        <h1>Wypożyczalnia samochodów - CARMEX</h1>
+        <img src="/images/logo.png" width="300" height="120" alt="CARMEX Logo">
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="/" class="<%= navLocation == 'main' ? 'active' : '' %>">Strona główna</a></li>
+            <li><a href="/client" class="<%= navLocation == 'client' ? 'active' : '' %>">Klienci</a></li>
+            <li><a href="/car" class="<%= navLocation == 'car' ? 'active' : '' %>">Samochody</a></li>
+            <li><a href="/reservation" class="<%= navLocation == 'reservation' ? 'active' : '' %>">Rezerwacja</a></li>
+        </ul>
+    </nav>
+<main>
+    <script type="application/javascript" src="/js/validationClientForm.js"></script>
+    <h2><%= pageTitle %></h2>
+    <form class="form" method="post" action="<%=formAction%>" novalidate onsubmit="return validateForm();">
+        <input type="hidden" name="_id" value="<%= client._id %>">
+
+        <label for="firstName">Imię: <span class="symbol-required">*</span></label>
+        <input type="text" name="firstName" id="firstName" placeholder="np. Jan (2-60 znaków)" required value="<%= client.firstName %>" 
+        class="<% if (Object.keys(validationErrors).length === 0) {%><% }else{%><%= validationErrors.find(e => e.path.includes('firstName')) ? 'error-input' : '' %><%}%>"
+        <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+        <span id="errorFirstName" class="errors-text">
+            <% if (Object.keys(validationErrors).length === 0) {%><% }else{%>
+                <% if (validationErrors.find(e=> e.path.includes('firstName'))) { %>
+                    <%= validationErrors.find(e=> e.path.includes('firstName')).message %>
+                <% } %>
+            <% } %>
+        </span>
+
+        <label for="lastName">Nazwisko: <span class="symbol-required">*</span></label>
+        <input type="text" name="lastName" id="lastName" placeholder="np. Kowalski (2-60 znaków)" required value="<%= client.lastName %>" 
+        class="<% if (Object.keys(validationErrors).length === 0) {%><% }else{%><%= validationErrors.find(e => e.path.includes('lastName')) ? 'error-input' : '' %><%}%>"
+        <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+        <span id="errorLastName" class="errors-text">
+            <% if (Object.keys(validationErrors).length === 0) {%><% }else{%>
+                <% if (validationErrors.find(e=> e.path.includes('lastName'))) { %>
+                    <%= validationErrors.find(e=> e.path.includes('lastName')).message %>
+                <% } %>
+            <% } %>
+        </span>
+
+        <label for="pesel">Pesel: <span class="symbol-required">*</span></label>
+        <input type="text" name="pesel" id="pesel" placeholder="np. 00111222333" required value="<%= client.pesel %>"
+        class="<% if (Object.keys(validationErrors).length === 0) {%><% }else{%><%= validationErrors.find(e => e.path.includes('pesel')) ? 'error-input' : '' %><%}%>"
+        <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+        <span id="errorPesel" class="errors-text">
+            <% if (Object.keys(validationErrors).length === 0) {%><% }else{%>
+                <% if (validationErrors.find(e => e.path.includes('pesel'))) { %>
+                    <% if (validationErrors.find(e => e.path.includes('pesel')).message === 'pesel must be unique') {%>
+                        Podany pesel jest już używany
+                    <% } else {%>
+                    <%= validationErrors.find(e => e.path.includes('pesel')).message %>
+                    <%}%>
+                <%}%>
+            <%}%>
+        </span>
+
+        <label for="email">Email: <span class="symbol-required">*</span></label>
+        <input type="email" name="email" id="email" placeholder="np. kowalski@mail.com" required value="<%= client.email %>"
+        class="<% if (Object.keys(validationErrors).length === 0) {%><% }else{%><%= validationErrors.find(e => e.path.includes('email')) ? 'error-input' : '' %><%}%>"
+        <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+        <span id="errorEmail" class="errors-text">
+            <% if (Object.keys(validationErrors).length === 0) {%><% }else{%>
+                <% if (validationErrors.find(e => e.path.includes('email'))) { %>
+                    <% if (validationErrors.find(e => e.path.includes('email')).message === 'email must be unique') {%>
+                        Podany adres email jest już używany
+                    <% } else {%>
+                    <%= validationErrors.find(e => e.path.includes('email')).message %>
+                    <%}%>
+                <%}%>
+            <%}%>
+        </span>
+
+        <label for="phoneNumber">Numer telefonu: <span class="symbol-required">*</span></label>
+        <input type="tel" name="phoneNumber" id="phoneNumber" placeholder="np. 111-222-333" required value="<%= client.phoneNumber %>"
+        class="<% if (Object.keys(validationErrors).length === 0) {%><% }else{%><%= validationErrors.find(e => e.path.includes('phoneNumber')) ? 'error-input' : '' %><%}%>"
+        <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+        <span id="errorPhoneNumber" class="errors-text">
+            <% if (Object.keys(validationErrors).length === 0) {%><% }else{%>
+                <% if (validationErrors.find(e => e.path.includes('phoneNumber'))) { %>
+                    <% if (validationErrors.find(e => e.path.includes('phoneNumber')).message === 'phoneNumber must be unique') {%>
+                        Podany numer telefonu jest już używany
+                    <% } else {%>
+                    <%= validationErrors.find(e => e.path.includes('phoneNumber')).message %>
+                    <%}%>
+                <%}%>
+            <%}%>
+        </span>
+
+        <label for="companyName">Firma: </label>
+        <input type="text" name="companyName" placeholder="np. Microsoft" id="companyName" value="<%= client.companyName %>"
+        class="<% if (Object.keys(validationErrors).length === 0) {%><% }else{%><%= validationErrors.find(e => e.path.includes('companyName')) ? 'error-input' : '' %><%}%>"
+        <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+        <span id="errorCompanyName" class="errors-text">
+            <% if (Object.keys(validationErrors).length === 0) {%><% }else{%>
+                <% if (validationErrors.find(e=> e.path.includes('companyName'))) { %>
+                    <%= validationErrors.find(e=> e.path.includes('companyName')).message %>
+                <% } %>
+            <% } %>
+        </span>
+
+        <label for="nip">NIP: </label>
+        <input type="text" name="nip" id="nip" placeholder="np. 013456723" value="<%= client.nip %>"
+        class="<% if (Object.keys(validationErrors).length === 0) {%><% }else{%><%= validationErrors.find(e => e.path.includes('nip')) ? 'error-input' : '' %><%}%>"
+        <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+        <span id="errorNip" class="errors-text">
+            <% if (Object.keys(validationErrors).length === 0) {%><% }else{%>
+                <% if (validationErrors.find(e=> e.path.includes('nip'))) { %>
+                    <%= validationErrors.find(e=> e.path.includes('nip')).message %>
+                <% } %>
+            <% } %>
+        </span>
+
+        <div class="form-buttons">
+            <p id="errorsSummary" class="errors-text"></p>
+                <input class="form-button-submit" type="submit" value="<%=btnLabel%>">
+                <a href="/client" class="form-button-cancel">Powrót</a>
+        </div>
+    </form>
+</main>
+<footer>
+    Karol, Kamiński, s20664
+</footer>
+</body>
+</html>

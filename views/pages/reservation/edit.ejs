@@ -1,0 +1,99 @@
+<%- include('../../fragments/header.ejs') %>
+<main>
+    <script type="application/javascript" src="/js/validationReservationForm.js"></script>
+    <h2><%= pageTitle%></h2>
+    <form class="form" method="post" action="<%=formAction%>" novalidate onsubmit="return validateForm();"> 
+        <input type="hidden" name="_id" value="<%= reservation._id %>">
+
+        <label for="client">Klient: <span class="symbol-required">*</span></label> 
+        <% if (Object.keys(validationErrors).length === 0) {%>
+        <select name="client_id" id="client" required 
+        <%= (formMode == 'showDetails') ? 'disabled' : ''%> >
+            <% for (let i=0; i<allClients.length; i++) { let client = allClients[i]; %>
+                <option value="<%= client._id %>" label="<%= client.firstName + ' ' + client.lastName %>"
+                    <%= (reservation._id && client._id.toString() == reservation.client._id.toString()) ? 'selected' : ''%> >
+                </option>
+            <% } %>
+        </select>
+        <% } else { %>
+        <select name="client_id" id="client" required
+        class="<% if (Object.keys(validationErrors).length === 0) {%><% }else{%><%= validationErrors.find(e => e.path.includes('client')) ? 'error-input' : '' %><%}%>"
+        <%= (formMode == 'showDetails') ? 'disabled' : ''%> >
+            <% for (let i=0; i<allClients.length; i++) { let client = allClients[i]; %>
+                <option value="<%= client._id %>" label="<%= client.firstName + ' ' + client.lastName %>"
+                    <%= (reservation._id && client._id.toString() == reservation.client._id.toString()) ? 'selected' : ''%> >
+                </option>
+            <% } %>
+        </select>
+        <% } %>
+        <span id="errorClient" class="errors-text">
+            <% if (Object.keys(validationErrors).length === 0) {%><% }else{%>
+                <% if (validationErrors.find(e=> e.path.includes('client'))) { %>
+                    <%= validationErrors.find(e=> e.path.includes('client')).message %>
+                <% } %>
+            <% } %>
+        </span>
+
+        <label for="car">Samochód: <span class="symbol-required">*</span></label>
+        <% if (Object.keys(validationErrors).length === 0) {%>
+        <select name="car_id" id="car" required
+        <%= (formMode == 'showDetails') ? 'disabled' : ''%> >
+            <% for (let i=0; i<allCars.length; i++) { let car = allCars[i]; %>
+                <option value="<%= car._id %>" label="<%= car.brandName + ' ' + car.model %>"
+                    <%= (reservation._id && car._id.toString() == reservation.car._id.toString()) ? 'selected' : ''%> >
+                </option>
+            <% } %>
+        </select>
+        <% } else { %>
+        <select name="car_id" id="car" required
+        class="<% if (Object.keys(validationErrors).length === 0) {%><% }else{%><%= validationErrors.find(e => e.path.includes('car')) ? 'error-input' : '' %><%}%>"
+        <%= (formMode == 'showDetails') ? 'disabled' : ''%> >
+            <% for (let i=0; i<allCars.length; i++) { let car = allCars[i]; %>
+                <option value="<%= car._id %>" label="<%= car.brandName + ' ' + car.model %>"
+                    <%= (reservation._id && car._id.toString() == reservation.car._id.toString()) ? 'selected' : ''%> >
+                </option>
+            <% } %>
+        </select>
+        <% } %>
+        <span id="errorCar" class="errors-text">
+            <% if (Object.keys(validationErrors).length === 0) {%><% }else{%>
+                <% if (validationErrors.find(e=> e.path.includes('car'))) { %>
+                    <%= validationErrors.find(e=> e.path.includes('car')).message %>
+                <% } %>
+            <% } %>
+        </span>
+
+        <label for="dateFrom">DataOd: <span class="symbol-required">*</span></label>
+        <input type="date" name="dateFrom" id="dateFrom" required 
+        value="<% if (Object.keys(reservationData).length === 0){%><%= reservation.dateFrom.toISOString().split('T')[0]%><% }else{%><%= reservation.dateFrom%><%}%>" 
+        class="<% if (Object.keys(validationErrors).length === 0) {%><% }else{%><%= validationErrors.find(e => e.path.includes('dateFrom')) ? 'error-input' : '' %><%}%>"
+        <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+        <span id="errorDateFrom" class="errors-text">
+            <% if (Object.keys(validationErrors).length === 0) {%><% }else{%>
+                <% if (validationErrors.find(e=> e.path.includes('dateFrom'))) { %>
+                    <%= validationErrors.find(e=> e.path.includes('dateFrom')).message %>
+                <% } %>
+            <% } %>
+        </span>
+
+        <label for="dateTo">DataDo: </label>
+        <input type="date" name="dateTo" id="dateTo" 
+        value="<% if (Object.keys(reservationData).length === 0){%><%= reservation.dateTo.toISOString().split('T')[0]%><% }else{%><%= reservation.dateTo%><%}%>"
+        class="<% if (Object.keys(validationErrors).length === 0) {%><% }else{%><%= validationErrors.find(e => e.path.includes('dateTo')) ? 'error-input' : '' %><%}%>" 
+        <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+        <span id="errorDateTo" class="errors-text">
+            <% if (Object.keys(validationErrors).length === 0) {%><% }else{%>
+                <% if (validationErrors.find(e=> e.path.includes('dateTo'))) { %>
+                    <%= validationErrors.find(e=> e.path.includes('dateTo')).message %>
+                <% } %>
+            <% } %>
+        </span>
+
+        <div class="form-buttons">
+            <p id="errorsSummary" class="errors-text"></p>
+                <input class="form-button-submit" type="submit" value="<%=btnLabel%>">
+                <a href="/reservation" class="form-button-cancel">Powrót</a>
+        </div>
+    </form>
+</main>
+<%- include('../../fragments/footer.ejs') %>

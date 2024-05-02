@@ -1,0 +1,53 @@
+<%- include('../../fragments/header.ejs') %>
+    <main>
+        <h2>Lista samochodów</h2>
+        <table class="table-list">
+            <thead>
+                <tr>
+                    <th>Marka</th>
+                    <th>Model</th>
+                    <th>Numer rejestracyjny</th>
+                    <th>Ubezpieczenie</th>
+                    <th>Przegląd</th>
+                    <th>Opis</th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            <% for (let car of cars) { %>
+                <tr>
+                    <td><%=car.brandName%></td>
+                    <td><%=car.model%></td>
+                    <td><%=car.registration%></td>
+                    <% if (car.insurance == true) { %>
+                        <td>Tak</td>
+                    <% } else { %>
+                        <td>Nie</td>
+                    <% } %>
+                    <% if (car.inspection == true) { %>
+                        <td>Tak</td>
+                    <% } else { %>
+                        <td>Nie</td>
+                    <% } %>
+                    <td><%=car.description%></td>
+                    <td>
+                        <ul class="list-actions">
+                            <li>
+                                <a href="/car/details/<%=car._id%>" class="list-actions-button-details">Szczegóły</a>
+                            </li>
+                            <li>
+                                <a href="/car/edit/<%=car._id%>" class="list-actions-button-edit">Edytuj</a>
+                            </li>
+                            <li>
+                                <a href="/car/delete/<%=car._id%>" class="list-actions-button-delete" onclick="return confirm('Czy na pewno chcesz usunąć ten samochód?');">Usuń</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>                
+            <% } %>
+            </tbody>
+        </table>
+        <p><a href="/car/add" class="button-add">Dodaj nowy samochód</a></p>
+    </main>
+<%- include('../../fragments/footer.ejs') %>

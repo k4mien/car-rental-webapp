@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Wypożyczalnia samochodów - CARMEX</title>
+</head>
+<body>
+    <header>
+        <h1>Wypożyczalnia samochodów - CARMEX</h1>
+        <img src="/images/logo.png" width="300" height="120" alt="CARMEX Logo">
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="/" class="<%= navLocation == 'main' ? 'active' : '' %>">Strona główna</a></li>
+            <li><a href="/client" class="<%= navLocation == 'client' ? 'active' : '' %>">Klienci</a></li>
+            <li><a href="/car" class="<%= navLocation == 'car' ? 'active' : '' %>">Samochody</a></li>
+            <li><a href="/reservation" class="<%= navLocation == 'reservation' ? 'active' : '' %>">Rezerwacja</a></li>
+        </ul>
+    </nav>
+    <main>
+        <script type="application/javascript" src="/js/validationClientForm.js"></script>
+        <h2><%= pageTitle %></h2>
+        <form class="form" novalidate onsubmit="return validateForm();">
+            <input type="hidden" name="_id" value="<%= client._id %>">
+
+            <label for="firstName">Imię: <span class="symbol-required">*</span></label>
+            <input type="text" name="firstName" id="firstName" placeholder="np. Jan (2-60 znaków)" required value="<%= client.firstName %>" 
+            <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+            <span id="errorFirstName" class="errors-text">
+            </span>
+
+            <label for="lastName">Nazwisko: <span class="symbol-required">*</span></label>
+            <input type="text" name="lastName" id="lastName" placeholder="np. Kowalski (2-60 znaków)" required value="<%= client.lastName %>" 
+            <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+            <span id="errorLastName" class="errors-text">
+            </span>
+
+            <label for="pesel">Pesel: <span class="symbol-required">*</span></label>
+            <input type="text" name="pesel" id="pesel" placeholder="np. 00111222333" required value="<%= client.pesel %>"
+            <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+            <span id="errorPesel" class="errors-text">
+            </span>
+
+            <label for="email">Email: <span class="symbol-required">*</span></label>
+            <input type="email" name="email" id="email" placeholder="np. kowalski@mail.com" required value="<%= client.email %>"
+            <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+            <span id="errorEmail" class="errors-text">
+            </span>
+
+            <label for="phoneNumber">Numer telefonu: <span class="symbol-required">*</span></label>
+            <input type="tel" name="phoneNumber" id="phoneNumber" placeholder="np. 111-222-333" required value="<%= client.phoneNumber %>"
+            <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+            <span id="errorPhoneNumber" class="errors-text">
+            </span>
+
+            <label for="companyName">Firma: </label>
+            <input type="text" name="companyName" placeholder="np. Microsoft" id="companyName" value="<%= client.companyName %>"
+            <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+            <span id="errorCompanyName" class="errors-text">
+            </span>
+
+            <label for="nip">NIP: </label>
+            <input type="text" name="nip" id="nip" placeholder="np. 013456723" value="<%= client.nip %>"
+            <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+            <span id="errorNip" class="errors-text">
+            </span>
+
+            <% if (formMode == 'showDetails') { %>
+                <div>
+                    <a class="list-actions-button-edit" href="/client/edit/<%= client._id %>">Edytuj</a>
+                </div>
+            <% } %>
+
+            <div class="form-buttons">
+                <p id="errorsSummary" class="errors-text"></p>
+                <a href="/client" class="form-button-cancel">Powrót</a>
+            </div>
+        </form>
+
+        <% if (formMode == 'showDetails' || formMode == 'edit') { %>
+            <h2>Szczegóły rezerwacji</h2>
+            
+            <table class="table-list">
+                <thead>
+                    <tr>
+                        <th>Samochód</th>
+                        <th>DataOd</th>
+                        <th>DataDo</th>
+                    </tr>
+                </thead>
+        
+                <tbody>
+                    <% for (let c of client.reservations) { %>
+                        <tr>
+                            <td><a href="/car/details/<%= c.car._id %>"><%= c.car.brandName + ' ' + c.car.model %></a></td>
+                            <td><%= c.dateFrom.toISOString().split('T')[0] %></td>
+                            <td><%= c.dateTo? c.dateTo.toISOString().split('T')[0] : '' %></td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+            <% } %>
+    </main>
+    <footer>
+        Karol, Kamiński, s20664
+    </footer>
+    </body>
+    </html>

@@ -1,0 +1,86 @@
+<%- include('../../fragments/header.ejs') %>
+<main>
+    <script type="application/javascript" src="/js/validationCarForm.js"></script>
+    <h2><%= pageTitle %></h2>
+    <form class="form" novalidate onsubmit="return validateForm();">
+        <input type="hidden" name="_id" value="<%= car._id %>">
+
+        <label for="brandName">Marka: <span class="symbol-required">*</span></label>
+        <input type="text" name="brandName" id="brandName" placeholder="np. Mazda (2-60 znaków)" required value="<%= car.brandName%>"
+        <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+        <span id="errorBrandName" class="errors-text">
+        </span>
+
+        <label for="model">Model: <span class="symbol-required">*</span></label>
+        <input type="text" name="model" id="model" placeholder="np. RX-8 (2-60 znaków)" required value="<%= car.model %>"
+        <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+        <span id="errorModel" class="errors-text">
+        </span>
+
+        <label for="registration">Numer rejestracyjny: <span class="symbol-required">*</span></label>
+        <input type="text" name="registration" id="registration" placeholder="np. WWA-11122 albo WF-111222" required value="<%= car.registration %>"
+        <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+        <span id="errorRegistration" class="errors-text">
+        </span>
+
+        <label for="insurance">Ubezpieczenie: <span class="symbol-required">*</span></label>
+        <% if (car.insurance == true) { %>
+            <input type="text" name="insurance" id="insurance" value="Tak" <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+        <% } else { %>
+            <input type="text" name="insurance" id="insurance" value="Nie" <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+        <% } %>
+        <span id="errorInsurance" class="errors-text">
+        </span>
+
+        <label for="inspection">Przegląd: <span class="symbol-required">*</span></label>
+        <% if (car.inspection == true) { %>
+            <input type="text" name="inspection" id="inspection" value="Tak" <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+        <% } else { %>
+            <input type="text" name="inspection" id="inspection" value="Nie" <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+        <% } %>
+        <span id="errorInspection" class="errors-text">
+        </span>
+
+        <label for="description">Opis: </label>
+        <input type="text" name="description" id="description" placeholder="np. Samochód powypadkowy... (1-1000 znaków)" maxlength="1000" value="<%= car.description %>"
+        <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+        <span id="errorDescription" class="errors-text">
+        </span>
+
+        <% if (formMode == 'showDetails') { %>
+            <div>
+                <a class="list-actions-button-edit" href="/car/edit/<%= car._id %>">Edytuj</a>
+            </div>
+        <% } %>
+
+        <div class="form-buttons">
+            <p id="errorsSummary" class="errors-text"></p>
+            <a href="/car" class="form-button-cancel">Powrót</a>
+        </div>
+    </form>
+
+    <% if (formMode == 'showDetails' || formMode == 'edit') { %>
+        <h2>Szczegóły rezerwacji</h2>
+        
+        <table class="table-list">
+            <thead>
+                <tr>
+                    <th>Klient</th>
+                    <th>DataOd</th>
+                    <th>DataDo</th>
+                </tr>
+            </thead>
+    
+            <tbody>
+                <% for (let c of car.reservations) { %>
+                    <tr>
+                        <td><a href="/client/details/<%= c.client._id %>"><%= c.client.firstName + ' ' + c.client.lastName %></a></td>
+                        <td><%= c.dateFrom.toISOString().split('T')[0] %></td>
+                        <td><%= c.dateTo? c.dateTo.toISOString().split('T')[0] : '' %></td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    <% } %>
+</main>
+<%- include('../../fragments/footer.ejs') %>

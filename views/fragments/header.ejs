@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Wypożyczalnia samochodów - CARMEX</title>
+</head>
+<body>
+    <header>
+        <h1>Wypożyczalnia samochodów - CARMEX</h1>
+        <img src="/images/logo.png" width="300" height="120" alt="CARMEX Logo">
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="/" class="<%= navLocation == 'main' ? 'active' : '' %>">Strona główna</a></li>
+            <li><a href="/client" class="<%= navLocation == 'client' ? 'active' : '' %>">Klienci</a></li>
+            <li><a href="/car" class="<%= navLocation == 'car' ? 'active' : '' %>">Samochody</a></li>
+            <li><a href="/reservation" class="<%= navLocation == 'reservation' ? 'active' : '' %>">Rezerwacja</a></li>
+        </ul>
+    </nav>

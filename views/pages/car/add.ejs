@@ -1,0 +1,103 @@
+<%- include('../../fragments/header.ejs') %>
+<main>
+    <script type="application/javascript" src="/js/validationCarForm.js"></script>
+    <h2><%= pageTitle %></h2>
+    <form class="form" method="post" action="<%=formAction%>" novalidate onsubmit="return validateForm();">
+        <input type="hidden" name="_id" value="<%= car._id %>">
+
+        <label for="brandName">Marka: <span class="symbol-required">*</span></label>
+        <input type="text" name="brandName" id="brandName" placeholder="np. Mazda (2-60 znaków)" required value="<%= car.brandName%>"
+        class="<% if (Object.keys(validationErrors).length === 0) {%><% }else{%><%= validationErrors.find(e => e.path.includes('brandName')) ? 'error-input' : '' %><%}%>"
+        <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+        <span id="errorBrandName" class="errors-text">
+            <% if (Object.keys(validationErrors).length === 0) {%><% }else{%>
+                <% if (validationErrors.find(e=> e.path.includes('brandName'))) { %>
+                    <%= validationErrors.find(e=> e.path.includes('brandName')).message %>
+                <% } %>
+            <% } %>
+        </span>
+        
+        <label for="model">Model: <span class="symbol-required">*</span></label>
+        <input type="text" name="model" id="model" placeholder="np. RX-8 (2-60 znaków)" required value="<%= car.model %>"
+        class="<% if (Object.keys(validationErrors).length === 0) {%><% }else{%><%= validationErrors.find(e => e.path.includes('model')) ? 'error-input' : '' %><%}%>"        
+        <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+        <span id="errorModel" class="errors-text">
+            <% if (Object.keys(validationErrors).length === 0) {%><% }else{%>
+                <% if (validationErrors.find(e=> e.path.includes('model'))) { %>
+                    <%= validationErrors.find(e=> e.path.includes('model')).message %>
+                <% } %>
+            <% } %>
+        </span>
+
+        <label for="registration">Numer rejestracyjny: <span class="symbol-required">*</span></label>
+        <input type="text" name="registration" id="registration" placeholder="np. WWA-11122 albo WF-111222" required value="<%= car.registration %>"
+        class="<% if (Object.keys(validationErrors).length === 0) {%><% }else{%><%= validationErrors.find(e => e.path.includes('registration')) ? 'error-input' : '' %><%}%>"
+        <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+        <span id="errorRegistration" class="errors-text">
+            <% if (Object.keys(validationErrors).length === 0) {%><% }else{%>
+                <% if (validationErrors.find(e => e.path.includes('registration'))) { %>
+                    <% if (validationErrors.find(e => e.path.includes('registration')).message === 'registration must be unique') {%>
+                        Podana rejestracja jest już w użyciu
+                    <% } else {%>
+                    <%= validationErrors.find(e => e.path.includes('registration')).message %>
+                    <%}%>
+                <%}%>
+            <%}%>
+        </span>
+
+        <label for="insurance">Ubezpieczenie: <span class="symbol-required">*</span></label>
+        <select name="insurance" id="insurance"
+        class="<% if (Object.keys(validationErrors).length === 0) {%><% }else{%><%= validationErrors.find(e => e.path.includes('insurance')) ? 'error-input' : '' %><%}%>"
+        <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+            <option value="" selected="selected">Wybierz Ubezpieczenie</option>
+            <option value="1" label="Tak"></option>
+            <option value="0" label="Nie"></option>
+        </select>
+        <span id="errorInsurance" class="errors-text">
+            <% if (Object.keys(validationErrors).length === 0) {%><% }else{%>
+                <% if (validationErrors.find(e=> e.path.includes('insurance'))) { %>
+                    <%= validationErrors.find(e=> e.path.includes('insurance')).message %>
+                <% } %>
+            <% } %>
+        </span>
+
+        <label for="inspection">Przegląd: <span class="symbol-required">*</span></label>
+        <select name="inspection" id="inspection"
+        class="<% if (Object.keys(validationErrors).length === 0) {%><% }else{%><%= validationErrors.find(e => e.path.includes('inspection')) ? 'error-input' : '' %><%}%>"
+        <%= (formMode == 'showDetails') ? 'disabled' : ''%> >
+            <option value="" selected="selected">Wybierz Przeglad</option>
+            <option value="1" label="Tak"></option>
+            <option value="0" label="Nie"></option>
+        </select>
+        <span id="errorInspection" class="errors-text">
+            <% if (Object.keys(validationErrors).length === 0) {%><% }else{%>
+                <% if (validationErrors.find(e=> e.path.includes('inspection'))) { %>
+                    <%= validationErrors.find(e=> e.path.includes('inspection')).message %>
+                <% } %>
+            <% } %>
+        </span>
+
+        <label for="description">Opis: </label>
+        <input type="text" name="description" id="description" placeholder="np. Samochód powypadkowy... (1-1000 znaków)" maxlength="1000" value="<%= car.description %>"
+        class="<% if (Object.keys(validationErrors).length === 0) {%><% }else{%><%= validationErrors.find(e => e.path.includes('description')) ? 'error-input' : '' %><%}%>"
+        <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+        <span id="errorDescription" class="errors-text">
+            <% if (Object.keys(validationErrors).length === 0) {%><% }else{%>
+                <% if (validationErrors.find(e=> e.path.includes('description'))) { %>
+                    <%= validationErrors.find(e=> e.path.includes('description')).message %>
+                <% } %>
+            <% } %>
+        </span>
+
+        <div class="form-buttons">
+            <p id="errorsSummary" class="errors-text"></p>
+            <% if (formMode != 'showDetails') { %>
+                <input class="form-button-submit" type="submit" value="<%=btnLabel%>">
+                <a href="/car"" class="form-button-cancel">Anuluj</a>
+            <% } else { %>
+                <a href="/car" class="form-button-cancel">Powrót</a>
+            <% } %>
+        </div>
+    </form>
+</main>
+<%- include('../../fragments/footer.ejs') %>

@@ -1,0 +1,44 @@
+<%- include('../../fragments/header.ejs') %>
+<main>
+    <script type="application/javascript" src="/js/validationReservationForm.js"></script>
+    <h2><%= pageTitle%></h2>
+    <form class="form" novalidate onsubmit="return validateForm();"> 
+        <input type="hidden" name="_id" value="<%= reservation._id %>">
+
+        <label for="client">Klient: <span class="symbol-required">*</span></label>
+        <input type="text" name="client" id="client" value="<%= reservation.client.firstName + ' ' + reservation.client.lastName %>"
+        <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+        <span id="errorClient" class="errors-text">
+        </span>
+
+        <label for="car">Samochód: <span class="symbol-required">*</span></label>
+        <input type="text" name="car" id="car" value="<%= reservation.car.brandName + ' ' + reservation.car.model %>"
+        <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+        <span id="errorCar" class="errors-text">
+        </span>
+
+        <label for="dateFrom">DataOd: <span class="symbol-required">*</span></label>
+        <input type="date" name="dateFrom" id="dateFrom" required value="<%= reservation.dateFrom.toISOString().split('T')[0] %>"
+        <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+        <span id="errorDateFrom" class="errors-text">
+        </span>
+
+        <label for="dateTo">DataDo: </label>
+        <input type="date" name="dateTo" id="dateTo" value="<%= reservation.dateTo.toISOString().split('T')[0] %>"
+        <%= (formMode == 'showDetails') ? 'disabled' : '' %> >
+        <span id="errorDateTo" class="errors-text">
+        </span>
+
+        <% if (formMode == 'showDetails') { %>
+            <div>
+                <a class="list-actions-button-edit" href="/reservation/edit/<%= reservation._id %>">Edytuj</a>
+            </div>
+        <% } %>
+
+        <div class="form-buttons">
+            <p id="errorsSummary" class="errors-text"></p>
+            <a href="/reservation" class="form-button-cancel">Powrót</a>
+        </div>
+    </form>
+</main>
+<%- include('../../fragments/footer.ejs') %>
